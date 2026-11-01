@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const EdmanCyberAcademy());
+void main() {
+  runApp(const EdmanCyberAcademy());
+}
+
+// ==================== COLORS ====================
 
 const Color matrixGreen = Color(0xFF39FF14);
 const Color neonGreen = Color(0xFF00D084);
 const Color background = Color(0xFF070B09);
 const Color panel = Color(0xFF101813);
 const Color muted = Color(0xFF9AA9A0);
+
+// ==================== APP ====================
 
 class EdmanCyberAcademy extends StatelessWidget {
   const EdmanCyberAcademy({super.key});
@@ -32,6 +38,8 @@ class EdmanCyberAcademy extends StatelessWidget {
   }
 }
 
+// ==================== COURSE MODEL ====================
+
 class Course {
   final String title;
   final String subtitle;
@@ -51,6 +59,8 @@ class Course {
     required this.lessons,
   });
 }
+
+// ==================== COURSES DATA ====================
 
 const List<Course> courses = [
   Course(
@@ -151,6 +161,8 @@ const List<Course> courses = [
   ),
 ];
 
+// ==================== MAIN NAVIGATION ====================
+
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
 
@@ -173,14 +185,19 @@ class _MainShellState extends State<MainShell> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        body: SafeArea(child: pages[selectedIndex]),
+        body: SafeArea(
+          child: pages[selectedIndex],
+        ),
         bottomNavigationBar: NavigationBar(
           height: 70,
           backgroundColor: const Color(0xFF0D130F),
           indicatorColor: matrixGreen.withOpacity(0.14),
           selectedIndex: selectedIndex,
-          onDestinationSelected: (index) =>
-              setState(() => selectedIndex = index),
+          onDestinationSelected: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
           destinations: const [
             NavigationDestination(
               icon: Icon(Icons.home_outlined),
@@ -209,6 +226,8 @@ class _MainShellState extends State<MainShell> {
   }
 }
 
+// ==================== HOME PAGE ====================
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -225,67 +244,102 @@ class HomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: matrixGreen.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: matrixGreen.withOpacity(0.45)),
+                border: Border.all(
+                  color: matrixGreen.withOpacity(0.45),
+                ),
               ),
-              child: const Icon(Icons.security, color: matrixGreen, size: 27),
+              child: const Icon(
+                Icons.security,
+                color: matrixGreen,
+                size: 27,
+              ),
             ),
             const SizedBox(width: 12),
             const Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('𝑬𝒅𝒎𝒂𝒏',
-                      style: TextStyle(
-                          color: matrixGreen,
-                          fontSize: 21,
-                          fontWeight: FontWeight.w900)),
-                  Text('CYBER ACADEMY',
-                      style: TextStyle(
-                          color: muted,
-                          fontSize: 10,
-                          letterSpacing: 2.2,
-                          fontWeight: FontWeight.bold)),
+                  Text(
+                    '𝑬𝒅𝒎𝒂𝒏',
+                    style: TextStyle(
+                      color: matrixGreen,
+                      fontSize: 21,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  Text(
+                    'CYBER ACADEMY',
+                    style: TextStyle(
+                      color: muted,
+                      fontSize: 10,
+                      letterSpacing: 2.2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),
             IconButton(
-              onPressed: () => showAppMessage(context, 'الإشعارات قريباً'),
-              icon: const Icon(Icons.notifications_none, color: muted),
+              onPressed: () {
+                showAppMessage(context, 'الإشعارات قريباً');
+              },
+              icon: const Icon(
+                Icons.notifications_none,
+                color: muted,
+              ),
             ),
           ],
         ),
+
         const SizedBox(height: 24),
+
+        // Welcome Card
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             gradient: const LinearGradient(
-              colors: [Color(0xFF12351F), Color(0xFF0C1710), Color(0xFF101813)],
+              colors: [
+                Color(0xFF12351F),
+                Color(0xFF0C1710),
+                Color(0xFF101813),
+              ],
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
             ),
-            border: Border.all(color: matrixGreen.withOpacity(0.35)),
+            border: Border.all(
+              color: matrixGreen.withOpacity(0.35),
+            ),
           ),
           child: Stack(
             children: [
               Positioned(
                 left: -8,
                 top: -8,
-                child: Icon(Icons.memory,
-                    size: 105, color: matrixGreen.withOpacity(0.08)),
+                child: Icon(
+                  Icons.memory,
+                  size: 105,
+                  color: matrixGreen.withOpacity(0.08),
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('مستقبلك في الأمن يبدأ هنا',
-                      style: TextStyle(
-                          fontSize: 22,
-                          height: 1.5,
-                          fontWeight: FontWeight.bold)),
+                  const Text(
+                    'مستقبلك في الأمن يبدأ هنا',
+                    style: TextStyle(
+                      fontSize: 22,
+                      height: 1.5,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   const Text(
                     'تعلّم، تدرب، واحمِ العالم الرقمي بمسؤولية.',
-                    style: TextStyle(color: Color(0xFFC1D0C5), height: 1.6),
+                    style: TextStyle(
+                      color: Color(0xFFC1D0C5),
+                      height: 1.6,
+                    ),
                   ),
                   const SizedBox(height: 18),
                   FilledButton.icon(
@@ -293,61 +347,91 @@ class HomePage extends StatelessWidget {
                       backgroundColor: matrixGreen,
                       foregroundColor: Colors.black,
                     ),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (_) => const CourseDetailPage(
-                              course: courses.first)),
-                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          // تم إصلاح خطأ const هنا
+                          builder: (_) => CourseDetailPage(
+                            course: courses.first,
+                          ),
+                        ),
+                      );
+                    },
                     icon: const Icon(Icons.play_arrow),
-                    label: const Text('ابدأ التعلم',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    label: const Text(
+                      'ابدأ التعلم',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ],
           ),
         ),
+
         const SizedBox(height: 22),
-        const SectionHeading(title: 'ملخص تقدمك', action: 'هذا الجهاز'),
+
+        const SectionHeading(
+          title: 'ملخص تقدمك',
+          action: 'هذا الجهاز',
+        ),
+
         const SizedBox(height: 12),
+
         Row(
           children: const [
             Expanded(
               child: StatCard(
-                  icon: Icons.menu_book,
-                  value: '6',
-                  label: 'دورات',
-                  color: matrixGreen),
+                icon: Icons.menu_book,
+                value: '6',
+                label: 'دورات',
+                color: matrixGreen,
+              ),
             ),
             SizedBox(width: 10),
             Expanded(
               child: StatCard(
-                  icon: Icons.check_circle_outline,
-                  value: '0',
-                  label: 'دروس مكتملة',
-                  color: neonGreen),
+                icon: Icons.check_circle_outline,
+                value: '0',
+                label: 'دروس مكتملة',
+                color: neonGreen,
+              ),
             ),
             SizedBox(width: 10),
             Expanded(
               child: StatCard(
-                  icon: Icons.local_fire_department,
-                  value: '0',
-                  label: 'أيام متتالية',
-                  color: Color(0xFFFFB74D)),
+                icon: Icons.local_fire_department,
+                value: '0',
+                label: 'أيام متتالية',
+                color: Color(0xFFFFB74D),
+              ),
             ),
           ],
         ),
+
         const SizedBox(height: 24),
-        const SectionHeading(title: 'ابدأ من هنا', action: 'عرض الكل'),
+
+        const SectionHeading(
+          title: 'ابدأ من هنا',
+          action: 'عرض الكل',
+        ),
+
         const SizedBox(height: 12),
+
         CourseTile(course: courses[0]),
         CourseTile(course: courses[1]),
+
         const SizedBox(height: 12),
+
         const SafetyNotice(),
       ],
     );
   }
 }
+
+// ==================== COURSES PAGE ====================
 
 class CoursesPage extends StatelessWidget {
   const CoursesPage({super.key});
@@ -358,10 +442,13 @@ class CoursesPage extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       children: [
         const PageTitle(
-            title: 'المسارات التعليمية',
-            subtitle: 'اختر مسارك وتعلم خطوة بخطوة'),
+          title: 'المسارات التعليمية',
+          subtitle: 'اختر مسارك وتعلم خطوة بخطوة',
+        ),
         const SizedBox(height: 18),
-        ...courses.map((course) => CourseTile(course: course)),
+        ...courses.map(
+          (course) => CourseTile(course: course),
+        ),
         const SizedBox(height: 12),
         const SafetyNotice(),
       ],
@@ -369,9 +456,15 @@ class CoursesPage extends StatelessWidget {
   }
 }
 
+// ==================== COURSE TILE ====================
+
 class CourseTile extends StatelessWidget {
   final Course course;
-  const CourseTile({super.key, required this.course});
+
+  const CourseTile({
+    super.key,
+    required this.course,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -381,14 +474,21 @@ class CourseTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
-        side: BorderSide(color: Colors.white.withOpacity(0.07)),
+        side: BorderSide(
+          color: Colors.white.withOpacity(0.07),
+        ),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (_) => CourseDetailPage(course: course)),
-        ),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => CourseDetailPage(
+                course: course,
+              ),
+            ),
+          );
+        },
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Row(
@@ -400,21 +500,34 @@ class CourseTile extends StatelessWidget {
                   color: matrixGreen.withOpacity(0.10),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Icon(course.icon, color: matrixGreen, size: 27),
+                child: Icon(
+                  course.icon,
+                  color: matrixGreen,
+                  size: 27,
+                ),
               ),
               const SizedBox(width: 13),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(course.title,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15)),
+                    Text(
+                      course.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
                     const SizedBox(height: 5),
-                    Text(course.subtitle,
-                        style: const TextStyle(color: muted, fontSize: 11),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis),
+                    Text(
+                      course.subtitle,
+                      style: const TextStyle(
+                        color: muted,
+                        fontSize: 11,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     const SizedBox(height: 9),
                     Row(
                       children: [
@@ -431,14 +544,19 @@ class CourseTile extends StatelessWidget {
                         minHeight: 5,
                         backgroundColor: Colors.white.withOpacity(0.08),
                         valueColor:
-                            const AlwaysStoppedAnimation(matrixGreen),
+                            const AlwaysStoppedAnimation<Color>(
+                          matrixGreen,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(width: 8),
-              const Icon(Icons.chevron_left, color: muted),
+              const Icon(
+                Icons.chevron_left,
+                color: muted,
+              ),
             ],
           ),
         ),
@@ -447,9 +565,15 @@ class CourseTile extends StatelessWidget {
   }
 }
 
+// ==================== COURSE DETAILS ====================
+
 class CourseDetailPage extends StatelessWidget {
   final Course course;
-  const CourseDetailPage({super.key, required this.course});
+
+  const CourseDetailPage({
+    super.key,
+    required this.course,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -468,19 +592,34 @@ class CourseDetailPage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: panel,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: matrixGreen.withOpacity(0.25)),
+                border: Border.all(
+                  color: matrixGreen.withOpacity(0.25),
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(course.icon, color: matrixGreen, size: 38),
+                  Icon(
+                    course.icon,
+                    color: matrixGreen,
+                    size: 38,
+                  ),
                   const SizedBox(height: 14),
-                  Text(course.title,
-                      style: const TextStyle(
-                          fontSize: 21, fontWeight: FontWeight.bold)),
+                  Text(
+                    course.title,
+                    style: const TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 8),
-                  Text(course.subtitle,
-                      style: const TextStyle(color: muted, height: 1.6)),
+                  Text(
+                    course.subtitle,
+                    style: const TextStyle(
+                      color: muted,
+                      height: 1.6,
+                    ),
+                  ),
                   const SizedBox(height: 14),
                   Row(
                     children: [
@@ -492,30 +631,53 @@ class CourseDetailPage extends StatelessWidget {
                 ],
               ),
             ),
+
             const SizedBox(height: 22),
-            const SectionHeading(title: 'محتويات الدورة'),
+
+            const SectionHeading(
+              title: 'محتويات الدورة',
+            ),
+
             const SizedBox(height: 10),
-            ...List.generate(course.lessons.length, (index) {
-              return Card(
-                color: panel,
-                elevation: 0,
-                margin: const EdgeInsets.only(bottom: 9),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: matrixGreen.withOpacity(0.12),
-                    child: Text('${index + 1}',
+
+            ...List.generate(
+              course.lessons.length,
+              (index) {
+                return Card(
+                  color: panel,
+                  elevation: 0,
+                  margin: const EdgeInsets.only(bottom: 9),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: matrixGreen.withOpacity(0.12),
+                      child: Text(
+                        '${index + 1}',
                         style: const TextStyle(
-                            color: matrixGreen, fontWeight: FontWeight.bold)),
+                          color: matrixGreen,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      course.lessons[index],
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                    trailing: const Icon(
+                      Icons.lock_outline,
+                      color: muted,
+                      size: 18,
+                    ),
+                    onTap: () {
+                      showAppMessage(
+                        context,
+                        'سيتم إضافة محتوى هذا الدرس في المرحلة القادمة',
+                      );
+                    },
                   ),
-                  title: Text(course.lessons[index],
-                      style: const TextStyle(fontSize: 13)),
-                  trailing:
-                      const Icon(Icons.lock_outline, color: muted, size: 18),
-                  onTap: () => showAppMessage(
-                      context, 'سيتم إضافة محتوى هذا الدرس في المرحلة القادمة'),
-                ),
-              );
-            }),
+                );
+              },
+            ),
+
             const SafetyNotice(),
           ],
         ),
@@ -523,6 +685,8 @@ class CourseDetailPage extends StatelessWidget {
     );
   }
 }
+
+// ==================== LAB PAGE ====================
 
 class LabPage extends StatelessWidget {
   const LabPage({super.key});
@@ -533,58 +697,86 @@ class LabPage extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       children: [
         const PageTitle(
-            title: 'المختبر التدريبي',
-            subtitle: 'تدريبات تعليمية آمنة داخل بيئة تجريبية'),
+          title: 'المختبر التدريبي',
+          subtitle: 'تدريبات تعليمية آمنة داخل بيئة تجريبية',
+        ),
+
         const SizedBox(height: 18),
+
         Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             color: panel,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: matrixGreen.withOpacity(0.25)),
+            border: Border.all(
+              color: matrixGreen.withOpacity(0.25),
+            ),
           ),
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.science_outlined, color: matrixGreen, size: 34),
+              Icon(
+                Icons.science_outlined,
+                color: matrixGreen,
+                size: 34,
+              ),
               SizedBox(height: 12),
-              Text('مساحة التدريب قيد التجهيز',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(
+                'مساحة التدريب قيد التجهيز',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               SizedBox(height: 8),
               Text(
                 'سنضيف تحديات لفهم الشبكات وتحليل سجلات تجريبية واكتشاف أخطاء تطبيقات تدريبية، دون استهداف أجهزة أو مواقع حقيقية.',
-                style: TextStyle(color: muted, height: 1.7),
+                style: TextStyle(
+                  color: muted,
+                  height: 1.7,
+                ),
               ),
             ],
           ),
         ),
+
         const SizedBox(height: 16),
+
         const LabChallenge(
-            title: 'تحدي أساسيات الشبكات',
-            description: 'تعرف على IP وDNS والمنافذ من خلال أسئلة تفاعلية.',
-            icon: Icons.router),
+          title: 'تحدي أساسيات الشبكات',
+          description: 'تعرف على IP وDNS والمنافذ من خلال أسئلة تفاعلية.',
+          icon: Icons.router,
+        ),
+
         const LabChallenge(
-            title: 'حلّل سجل دخول تجريبي',
-            description: 'تعلم تمييز الأنشطة غير المعتادة في سجل افتراضي.',
-            icon: Icons.receipt_long),
+          title: 'حلّل سجل دخول تجريبي',
+          description: 'تعلم تمييز الأنشطة غير المعتادة في سجل افتراضي.',
+          icon: Icons.receipt_long,
+        ),
+
         const LabChallenge(
-            title: 'اكتشف خطأ في صفحة تدريبية',
-            description: 'تعرف على التحقق من المدخلات وطرق الحماية.',
-            icon: Icons.bug_report_outlined),
+          title: 'اكتشف خطأ في صفحة تدريبية',
+          description: 'تعرف على التحقق من المدخلات وطرق الحماية.',
+          icon: Icons.bug_report_outlined,
+        ),
       ],
     );
   }
 }
 
+// ==================== LAB CHALLENGE ====================
+
 class LabChallenge extends StatelessWidget {
   final String title;
   final String description;
   final IconData icon;
-  const LabChallenge(
-      {super.key,
-      required this.title,
-      required this.description,
-      required this.icon});
+
+  const LabChallenge({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -593,16 +785,38 @@ class LabChallenge extends StatelessWidget {
       elevation: 0,
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
-        leading: Icon(icon, color: matrixGreen, size: 27),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(description,
-            style: const TextStyle(color: muted, fontSize: 12, height: 1.5)),
-        trailing: const Icon(Icons.chevron_left, color: muted),
-        onTap: () => showAppMessage(context, 'التحدي سيُتاح قريباً'),
+        leading: Icon(
+          icon,
+          color: matrixGreen,
+          size: 27,
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: Text(
+          description,
+          style: const TextStyle(
+            color: muted,
+            fontSize: 12,
+            height: 1.5,
+          ),
+        ),
+        trailing: const Icon(
+          Icons.chevron_left,
+          color: muted,
+        ),
+        onTap: () {
+          showAppMessage(context, 'التحدي سيُتاح قريباً');
+        },
       ),
     );
   }
 }
+
+// ==================== PROFILE PAGE ====================
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -613,9 +827,12 @@ class ProfilePage extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       children: [
         const PageTitle(
-            title: 'حسابي',
-            subtitle: 'تابع تقدمك وإعدادات تجربتك التعليمية'),
+          title: 'حسابي',
+          subtitle: 'تابع تقدمك وإعدادات تجربتك التعليمية',
+        ),
+
         const SizedBox(height: 22),
+
         Center(
           child: Container(
             height: 92,
@@ -623,40 +840,82 @@ class ProfilePage extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: matrixGreen.withOpacity(0.12),
-              border: Border.all(color: matrixGreen.withOpacity(0.6), width: 2),
+              border: Border.all(
+                color: matrixGreen.withOpacity(0.6),
+                width: 2,
+              ),
             ),
-            child: const Icon(Icons.person, color: matrixGreen, size: 48),
+            child: const Icon(
+              Icons.person,
+              color: matrixGreen,
+              size: 48,
+            ),
           ),
         ),
+
         const SizedBox(height: 12),
+
         const Center(
-          child: Text('متعلم جديد',
-              style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+          child: Text(
+            'متعلم جديد',
+            style: TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
+
         const Center(
-          child: Text('رحلتك في الأمن السيبراني تبدأ اليوم',
-              style: TextStyle(color: muted, fontSize: 12)),
+          child: Text(
+            'رحلتك في الأمن السيبراني تبدأ اليوم',
+            style: TextStyle(
+              color: muted,
+              fontSize: 12,
+            ),
+          ),
         ),
+
         const SizedBox(height: 24),
+
         const ProfileOption(
-            icon: Icons.emoji_events_outlined, title: 'إنجازاتي'),
+          icon: Icons.emoji_events_outlined,
+          title: 'إنجازاتي',
+        ),
+
         const ProfileOption(
-            icon: Icons.bookmark_border, title: 'الدروس المحفوظة'),
+          icon: Icons.bookmark_border,
+          title: 'الدروس المحفوظة',
+        ),
+
         const ProfileOption(
-            icon: Icons.settings_outlined, title: 'الإعدادات'),
+          icon: Icons.settings_outlined,
+          title: 'الإعدادات',
+        ),
+
         const ProfileOption(
-            icon: Icons.info_outline, title: 'عن Edman Cyber Academy'),
+          icon: Icons.info_outline,
+          title: 'عن Edman Cyber Academy',
+        ),
+
         const SizedBox(height: 16),
+
         const SafetyNotice(),
       ],
     );
   }
 }
 
+// ==================== PROFILE OPTION ====================
+
 class ProfileOption extends StatelessWidget {
   final IconData icon;
   final String title;
-  const ProfileOption({super.key, required this.icon, required this.title});
+
+  const ProfileOption({
+    super.key,
+    required this.icon,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -665,38 +924,74 @@ class ProfileOption extends StatelessWidget {
       elevation: 0,
       margin: const EdgeInsets.only(bottom: 9),
       child: ListTile(
-        leading: Icon(icon, color: matrixGreen),
-        title: Text(title, style: const TextStyle(fontSize: 14)),
-        trailing: const Icon(Icons.chevron_left, color: muted),
-        onTap: () => showAppMessage(context, 'سيتم تفعيل هذا القسم لاحقاً'),
+        leading: Icon(
+          icon,
+          color: matrixGreen,
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 14),
+        ),
+        trailing: const Icon(
+          Icons.chevron_left,
+          color: muted,
+        ),
+        onTap: () {
+          showAppMessage(context, 'سيتم تفعيل هذا القسم لاحقاً');
+        },
       ),
     );
   }
 }
 
+// ==================== PAGE TITLE ====================
+
 class PageTitle extends StatelessWidget {
   final String title;
   final String subtitle;
-  const PageTitle({super.key, required this.title, required this.subtitle});
+
+  const PageTitle({
+    super.key,
+    required this.title,
+    required this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,
-            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900)),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
         const SizedBox(height: 6),
-        Text(subtitle, style: const TextStyle(color: muted, fontSize: 13)),
+        Text(
+          subtitle,
+          style: const TextStyle(
+            color: muted,
+            fontSize: 13,
+          ),
+        ),
       ],
     );
   }
 }
 
+// ==================== SECTION HEADING ====================
+
 class SectionHeading extends StatelessWidget {
   final String title;
   final String? action;
-  const SectionHeading({super.key, required this.title, this.action});
+
+  const SectionHeading({
+    super.key,
+    required this.title,
+    this.action,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -712,73 +1007,123 @@ class SectionHeading extends StatelessWidget {
         ),
         const SizedBox(width: 9),
         Expanded(
-          child: Text(title,
-              style:
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         if (action != null)
-          Text(action!, style: const TextStyle(color: muted, fontSize: 11)),
+          Text(
+            action!,
+            style: const TextStyle(
+              color: muted,
+              fontSize: 11,
+            ),
+          ),
       ],
     );
   }
 }
+
+// ==================== STAT CARD ====================
 
 class StatCard extends StatelessWidget {
   final IconData icon;
   final String value;
   final String label;
   final Color color;
-  const StatCard(
-      {super.key,
-      required this.icon,
-      required this.value,
-      required this.label,
-      required this.color});
+
+  const StatCard({
+    super.key,
+    required this.icon,
+    required this.value,
+    required this.label,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 7),
+      padding: const EdgeInsets.symmetric(
+        vertical: 14,
+        horizontal: 7,
+      ),
       decoration: BoxDecoration(
         color: panel,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.06)),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.06),
+        ),
       ),
       child: Column(
         children: [
-          Icon(icon, color: color, size: 21),
+          Icon(
+            icon,
+            color: color,
+            size: 21,
+          ),
           const SizedBox(height: 8),
-          Text(value,
-              style:
-                  const TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
           const SizedBox(height: 3),
-          Text(label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: muted, fontSize: 10)),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: muted,
+              fontSize: 10,
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
+// ==================== SMALL TAG ====================
+
 class SmallTag extends StatelessWidget {
   final String text;
-  const SmallTag({super.key, required this.text});
+
+  const SmallTag({
+    super.key,
+    required this.text,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 9,
+        vertical: 4,
+      ),
       decoration: BoxDecoration(
         color: matrixGreen.withOpacity(0.08),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: matrixGreen.withOpacity(0.22)),
+        border: Border.all(
+          color: matrixGreen.withOpacity(0.22),
+        ),
       ),
-      child: Text(text,
-          style: const TextStyle(color: matrixGreen, fontSize: 10)),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: matrixGreen,
+          fontSize: 10,
+        ),
+      ),
     );
   }
 }
+
+// ==================== SAFETY NOTICE ====================
 
 class SafetyNotice extends StatelessWidget {
   const SafetyNotice({super.key});
@@ -790,17 +1135,27 @@ class SafetyNotice extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF172016),
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: const Color(0xFF547A43).withOpacity(0.45)),
+        border: Border.all(
+          color: const Color(0xFF547A43).withOpacity(0.45),
+        ),
       ),
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.verified_user_outlined, color: matrixGreen, size: 21),
+          Icon(
+            Icons.verified_user_outlined,
+            color: matrixGreen,
+            size: 21,
+          ),
           SizedBox(width: 10),
           Expanded(
             child: Text(
               'تنبيه أخلاقي: جميع التدريبات مخصصة للتعلم داخل مختبرات تملكها أو لديك تصريح واضح لاختبارها. لا تختبر أنظمة الآخرين دون إذن.',
-              style: TextStyle(color: Color(0xFFC4D0C5), fontSize: 11, height: 1.6),
+              style: TextStyle(
+                color: Color(0xFFC4D0C5),
+                fontSize: 11,
+                height: 1.6,
+              ),
             ),
           ),
         ],
@@ -809,10 +1164,15 @@ class SafetyNotice extends StatelessWidget {
   }
 }
 
+// ==================== APP MESSAGE ====================
+
 void showAppMessage(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(message, textDirection: TextDirection.rtl),
+      content: Text(
+        message,
+        textDirection: TextDirection.rtl,
+      ),
       backgroundColor: const Color(0xFF1D3022),
       behavior: SnackBarBehavior.floating,
     ),

@@ -161,7 +161,7 @@ class MainScreen extends StatelessWidget {
       ),
       AcademyScreen(
         accent: accent,
-        completed: completedLessons,
+        completed: completedLessons,completedLessons: completedLessons,
         favorites: favorites,
         tr: tr,
         onComplete: onCompleteLesson,
@@ -169,6 +169,7 @@ class MainScreen extends StatelessWidget {
       ),
       LabsScreen(
         accent: accent,
+        english: english,
         tr: tr,
       ),
       SettingsScreen(

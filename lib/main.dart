@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const EdmanCyberAcademy());
+  runApp(const EdmanApp());
 }
 
-// ==================== COLORS ====================
+class EdmanApp extends StatefulWidget {
+  const EdmanApp({super.key});
 
-const Color matrixGreen = Color(0xFF39FF14);
-const Color neonGreen = Color(0xFF00D084);
-const Color background = Color(0xFF070B09);
-const Color panel = Color(0xFF101813);
-const Color muted = Color(0xFF9AA9A0);
+  @override
+  State<EdmanApp> createState() => _EdmanAppState();
+}
 
-// ==================== APP ====================
-
-class EdmanCyberAcademy extends StatelessWidget {
-  const EdmanCyberAcademy({super.key});
+class _EdmanAppState extends State<EdmanApp> {
+  Color accent = const Color(0xFF8B5CF6);
+  bool english = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,1157 +22,1022 @@ class EdmanCyberAcademy extends StatelessWidget {
       title: 'Edman Cyber Academy',
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: background,
-        colorScheme: const ColorScheme.dark(
-          primary: matrixGreen,
-          secondary: neonGreen,
-          surface: panel,
+        scaffoldBackgroundColor: const Color(0xFF080D18),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: accent,
+          brightness: Brightness.dark,
         ),
         useMaterial3: true,
-        fontFamily: 'Roboto',
       ),
-      home: const MainShell(),
+      home: AcademyHome(
+        accent: accent,
+        english: english,
+        onTheme: (c) => setState(() => accent = c),
+        onLanguage: (v) => setState(() => english = v),
+      ),
     );
   }
 }
 
-// ==================== COURSE MODEL ====================
+class Lesson {
+  final String title;
+  final String description;
+  final String content;
+  final IconData icon;
+
+  const Lesson(
+    this.title,
+    this.description,
+    this.content,
+    this.icon,
+  );
+}
 
 class Course {
   final String title;
-  final String subtitle;
-  final String level;
-  final String duration;
+  final String description;
   final IconData icon;
-  final double progress;
-  final List<String> lessons;
+  final List<Lesson> lessons;
 
-  const Course({
-    required this.title,
-    required this.subtitle,
-    required this.level,
-    required this.duration,
-    required this.icon,
-    required this.progress,
-    required this.lessons,
-  });
+  const Course(
+    this.title,
+    this.description,
+    this.icon,
+    this.lessons,
+  );
 }
 
-// ==================== COURSES DATA ====================
-
-const List<Course> courses = [
+final List<Course> courses = [
   Course(
-    title: 'مدخل إلى الأمن السيبراني',
-    subtitle: 'افهم المجال ومبادئ الحماية والأخلاقيات',
-    level: 'مبتدئ',
-    duration: '6 دروس',
-    icon: Icons.shield_outlined,
-    progress: 0.25,
-    lessons: [
-      'ما هو الأمن السيبراني؟',
-      'الفرق بين الاختبار الأخلاقي والهجوم غير المصرح',
-      'مبادئ السرية والسلامة والتوافر',
-      'نطاق الاختبار والحصول على الإذن',
-      'أنواع التهديدات الرقمية',
-      'مراجعة واختبار قصير',
+    'أساسيات الأمن السيبراني',
+    'ابدأ رحلتك في عالم الحماية الرقمية',
+    Icons.security,
+    [
+      Lesson(
+        'ما هو الأمن السيبراني؟',
+        'المفاهيم الأساسية',
+        'الأمن السيبراني هو مجموعة من الممارسات والتقنيات التي تهدف إلى حماية الأجهزة والشبكات والبيانات من الوصول غير المصرح به أو التغيير أو التعطيل.\n\n'
+        'أهم ثلاثة مبادئ:\n\n'
+        '1. السرية: حماية المعلومات من الأشخاص غير المصرح لهم.\n\n'
+        '2. السلامة: التأكد من أن البيانات لم يتم تغييرها دون إذن.\n\n'
+        '3. التوافر: ضمان إمكانية الوصول إلى الأنظمة وقت الحاجة.',
+        Icons.shield,
+      ),
+      Lesson(
+        'أنواع التهديدات',
+        'تعرف على المخاطر الرقمية',
+        'من أشهر التهديدات الرقمية:\n\n'
+        'التصيد الإلكتروني: رسائل وروابط تحاول خداع المستخدم.\n\n'
+        'الهندسة الاجتماعية: استغلال الثقة للحصول على معلومات.\n\n'
+        'البرمجيات الضارة: برامج قد تضر الجهاز أو البيانات.\n\n'
+        'تسريب البيانات: كشف معلومات خاصة دون تصريح.\n\n'
+        'أفضل حماية تبدأ بالوعي والتحديثات والحذر.',
+        Icons.warning_amber,
+      ),
+      Lesson(
+        'كلمات المرور',
+        'حماية الحسابات',
+        'استخدم كلمة مرور طويلة وفريدة لكل حساب.\n\n'
+        'لا تستخدم تاريخ ميلادك أو معلومات سهلة التخمين.\n\n'
+        'فعّل المصادقة متعددة العوامل.\n\n'
+        'لا تشارك رموز التحقق مع أي شخص.\n\n'
+        'يمكنك استخدام مدير كلمات مرور موثوق.',
+        Icons.password,
+      ),
     ],
   ),
   Course(
-    title: 'Linux و Termux',
-    subtitle: 'تعرف على سطر الأوامر وإدارة الملفات',
-    level: 'مبتدئ',
-    duration: '8 دروس',
-    icon: Icons.terminal,
-    progress: 0.0,
-    lessons: [
-      'التعرف على Linux وTermux',
-      'التنقل بين المجلدات',
-      'إنشاء الملفات والمجلدات',
-      'إدارة الحزم والتحديثات',
-      'الصلاحيات والمستخدمون',
-      'قراءة صفحات المساعدة',
-      'إدارة العمليات',
-      'تحدي مراجعة',
+    'الشبكات والإنترنت',
+    'افهم طريقة اتصال الأجهزة',
+    Icons.lan,
+    [
+      Lesson(
+        'مقدمة الشبكات',
+        'ما هي الشبكة؟',
+        'الشبكة هي مجموعة من الأجهزة المتصلة ببعضها لتبادل البيانات.\n\n'
+        'LAN: شبكة محلية داخل مكان محدود.\n\n'
+        'WAN: شبكة واسعة تربط شبكات عبر مسافات كبيرة.\n\n'
+        'Router: جهاز يربط الشبكات ويوجه البيانات.\n\n'
+        'Switch: يربط أجهزة الشبكة المحلية.',
+        Icons.router,
+      ),
+      Lesson(
+        'عنوان IP',
+        'هوية الجهاز على الشبكة',
+        'عنوان IP هو عنوان منطقي يستخدم للتعرف على واجهة الجهاز داخل الشبكة.\n\n'
+        'IPv4 يستخدم صيغة تتكون من أربعة أجزاء رقمية.\n\n'
+        'IPv6 هو معيار أحدث يوفر مساحة عناوين أكبر.\n\n'
+        'لا تشارك معلومات شبكتك الخاصة مع أشخاص مجهولين.',
+        Icons.language,
+      ),
+      Lesson(
+        'DNS و HTTPS',
+        'كيف يعمل الإنترنت؟',
+        'DNS يساعد في تحويل اسم الموقع إلى عنوان IP.\n\n'
+        'HTTP بروتوكول يستخدم لنقل صفحات الويب.\n\n'
+        'HTTPS يضيف طبقة تشفير لحماية الاتصال.\n\n'
+        'تأكد دائماً من اسم الموقع قبل إدخال بياناتك.',
+        Icons.public,
+      ),
+      Lesson(
+        'المنافذ والخدمات',
+        'مقدمة في Ports',
+        'المنفذ رقم منطقي تستخدمه الخدمات للتواصل عبر الشبكة.\n\n'
+        'وجود منفذ مفتوح لا يعني أن الجهاز مخترق.\n\n'
+        'يجب معرفة الخدمة التي تستخدم المنفذ وسبب تشغيلها.\n\n'
+        'افحص فقط الأجهزة التي تملكها أو لديك تصريح واضح لفحصها.',
+        Icons.settings_ethernet,
+      ),
     ],
   ),
   Course(
-    title: 'أساسيات الشبكات',
-    subtitle: 'IP وDNS وPorts وطرق عمل الشبكات',
-    level: 'مبتدئ',
-    duration: '7 دروس',
-    icon: Icons.lan_outlined,
-    progress: 0.0,
-    lessons: [
-      'كيف تعمل الشبكات؟',
-      'عنوان IP',
-      'الفرق بين TCP وUDP',
-      'ما هو DNS؟',
-      'المنافذ والخدمات',
-      'قراءة مخطط شبكة',
-      'اختبار قصير',
+    'Linux و Termux',
+    'تعلم بيئة الطرفية',
+    Icons.terminal,
+    [
+      Lesson(
+        'ما هو Linux؟',
+        'مقدمة أنظمة لينكس',
+        'Linux نظام يعتمد على نواة مفتوحة المصدر.\n\n'
+        'يستخدم في الخوادم والحواسيب والأجهزة المختلفة.\n\n'
+        'توجد توزيعات متعددة مثل Ubuntu و Debian.\n\n'
+        'الطرفية تسمح بالتعامل مع النظام باستخدام الأوامر النصية.',
+        Icons.computer,
+      ),
+      Lesson(
+        'مقدمة Termux',
+        'لينكس على أندرويد',
+        'Termux يوفر بيئة طرفية على أجهزة أندرويد.\n\n'
+        'يمكن استخدامه للتعلم وإدارة الملفات وتشغيل أدوات تعليمية.\n\n'
+        'نزّل التطبيق من مصدر موثوق.\n\n'
+        'لا تنفذ أوامر مجهولة ولا تستخدم الأدوات ضد أجهزة الآخرين.',
+        Icons.phone_android,
+      ),
+      Lesson(
+        'إدارة الملفات',
+        'تنظيم الملفات والمجلدات',
+        'المجلد يستخدم لتنظيم الملفات.\n\n'
+        'المسار يحدد مكان الملف داخل النظام.\n\n'
+        'النسخ الاحتياطي يحمي ملفاتك من الفقدان.\n\n'
+        'تأكد من المسار قبل تنفيذ أي عملية حذف أو تعديل.',
+        Icons.folder,
+      ),
     ],
   ),
   Course(
-    title: 'فحص الأمان وتحليل النتائج',
-    subtitle: 'مفاهيم الفحص داخل مختبر تملكه أو لديك إذن به',
-    level: 'متوسط',
-    duration: '5 دروس',
-    icon: Icons.manage_search,
-    progress: 0.0,
-    lessons: [
-      'مفهوم تقييم الثغرات',
-      'تحديد النطاق المصرح',
-      'قراءة نتائج فحص تجريبي',
-      'تمييز النتائج المهمة والإيجابيات الكاذبة',
-      'كتابة ملخص أمني',
+    'البرمجة وتطوير الويب',
+    'تعرف على أشهر لغات البرمجة',
+    Icons.code,
+    [
+      Lesson(
+        'HTML',
+        'بناء صفحات الويب',
+        'HTML هي لغة توصيف تستخدم لبناء هيكل صفحات الويب.\n\n'
+        'تستخدم للعناوين والفقرات والصور والروابط.\n\n'
+        'هيكل الصفحة الجيد يجعل المحتوى منظماً وسهل القراءة.',
+        Icons.web,
+      ),
+      Lesson(
+        'CSS',
+        'تصميم واجهات المواقع',
+        'CSS تتحكم في مظهر صفحات الويب.\n\n'
+        'يمكنك استخدامها لتغيير الألوان والخطوط والمسافات.\n\n'
+        'تساعدك على تصميم صفحات متجاوبة مع الهاتف والحاسوب.',
+        Icons.palette,
+      ),
+      Lesson(
+        'JavaScript',
+        'إضافة التفاعل',
+        'JavaScript لغة برمجة تضيف التفاعل إلى صفحات الويب.\n\n'
+        'يمكن استخدامها للتعامل مع الأزرار والنماذج وتحديث محتوى الصفحة.\n\n'
+        'لا تضع مفاتيح API السرية داخل كود المتصفح.',
+        Icons.javascript,
+      ),
+      Lesson(
+        'Python',
+        'لغة البرمجة Python',
+        'Python لغة سهلة القراءة ومناسبة للمبتدئين.\n\n'
+        'تستخدم في تحليل البيانات والأتمتة وتطوير التطبيقات.\n\n'
+        'ابدأ بتعلم المتغيرات والشروط والحلقات والدوال.',
+        Icons.data_object,
+      ),
+      Lesson(
+        'Java و C++',
+        'مقدمة لغات البرمجة',
+        'Java تستخدم في تطبيقات متعددة المنصات وتطوير تطبيقات أندرويد.\n\n'
+        'C++ تستخدم في الأنظمة والألعاب والبرامج التي تحتاج أداء مرتفعاً.\n\n'
+        'ابدأ بالمفاهيم الأساسية ثم انتقل للمشاريع الصغيرة.',
+        Icons.developer_mode,
+      ),
     ],
   ),
   Course(
-    title: 'أمن تطبيقات الويب',
-    subtitle: 'تعرف على الثغرات الشائعة وطرق منعها',
-    level: 'متوسط',
-    duration: '6 دروس',
-    icon: Icons.language,
-    progress: 0.0,
-    lessons: [
-      'كيف يعمل تطبيق الويب؟',
-      'التحقق من المدخلات',
-      'مفهوم SQL Injection',
-      'مفهوم XSS',
-      'المصادقة وإدارة الجلسات',
-      'طرق الوقاية والاختبار الآمن',
+    'البرمجيات الضارة والحماية',
+    'افهم المخاطر وكيف تحمي نفسك',
+    Icons.bug_report,
+    [
+      Lesson(
+        'ما هي Malware؟',
+        'مقدمة البرمجيات الضارة',
+        'Malware مصطلح عام للبرمجيات المصممة لإيذاء الأجهزة أو سرقة البيانات أو تعطيل الخدمات.\n\n'
+        'من أنواعها الفيروسات وبرامج التجسس وبرامج الفدية.\n\n'
+        'لا تجرب عينات ضارة على جهازك الحقيقي.\n\n'
+        'تعلم طرق اكتشافها والوقاية منها.',
+        Icons.bug_report,
+      ),
+      Lesson(
+        'التصيد الإلكتروني',
+        'اكتشاف الروابط المزيفة',
+        'التصيد محاولة لخداع المستخدم حتى يشارك معلوماته.\n\n'
+        'احذر الرسائل التي تطلب منك التصرف بسرعة.\n\n'
+        'تحقق من اسم النطاق قبل تسجيل الدخول.\n\n'
+        'لا تدخل بياناتك في صفحات مجهولة.',
+        Icons.link,
+      ),
+      Lesson(
+        'النسخ الاحتياطي',
+        'حماية ملفاتك',
+        'النسخ الاحتياطي يساعدك على استعادة ملفاتك عند فقدانها.\n\n'
+        'احتفظ بنسخة منفصلة عن الجهاز الأساسي.\n\n'
+        'اختبر استعادة الملفات من وقت لآخر.\n\n'
+        'حدّث النظام والتطبيقات باستمرار.',
+        Icons.backup,
+      ),
     ],
   ),
   Course(
-    title: 'التقارير والمسار المهني',
-    subtitle: 'حوّل نتائج التعلم إلى تقرير واضح',
-    level: 'متقدم',
-    duration: '4 دروس',
-    icon: Icons.workspace_premium_outlined,
-    progress: 0.0,
-    lessons: [
-      'كتابة تقرير ثغرة مسؤول',
-      'تقييم الخطورة بصورة عامة',
-      'اقتراح خطوات المعالجة',
-      'مشروع التخرج',
+    'الخصوصية والويب المظلم',
+    'وعي رقمي وحماية الخصوصية',
+    Icons.visibility_off,
+    [
+      Lesson(
+        'الخصوصية الرقمية',
+        'حماية معلوماتك الشخصية',
+        'لا تشارك معلوماتك الشخصية دون داعٍ.\n\n'
+        'راجع أذونات التطبيقات.\n\n'
+        'انتبه للصور التي قد تكشف بيانات خاصة.\n\n'
+        'استخدم إعدادات الخصوصية المتاحة في حساباتك.',
+        Icons.privacy_tip,
+      ),
+      Lesson(
+        'فهم الويب المظلم',
+        'معلومات توعوية',
+        'الويب المظلم يشير إلى خدمات لا تظهر عادة في محركات البحث التقليدية.\n\n'
+        'قد توجد استخدامات مشروعة للخصوصية، لكن توجد أيضاً مخاطر احتيال ومحتويات غير قانونية.\n\n'
+        'ابتعد عن الأسواق والخدمات غير القانونية.\n\n'
+        'لا تحمل ملفات مجهولة أو تشارك بياناتك الشخصية.',
+        Icons.visibility_off,
+      ),
     ],
   ),
 ];
 
-// ==================== MAIN NAVIGATION ====================
+class AcademyHome extends StatefulWidget {
+  final Color accent;
+  final bool english;
+  final Function(Color) onTheme;
+  final Function(bool) onLanguage;
 
-class MainShell extends StatefulWidget {
-  const MainShell({super.key});
+  const AcademyHome({
+    super.key,
+    required this.accent,
+    required this.english,
+    required this.onTheme,
+    required this.onLanguage,
+  });
 
   @override
-  State<MainShell> createState() => _MainShellState();
+  State<AcademyHome> createState() => _AcademyHomeState();
 }
 
-class _MainShellState extends State<MainShell> {
-  int selectedIndex = 0;
+class _AcademyHomeState extends State<AcademyHome> {
+  int page = 0;
+  int completed = 0;
+  final Set<String> doneLessons = {};
+  final Set<String> favorites = {};
 
-  final List<Widget> pages = const [
-    HomePage(),
-    CoursesPage(),
-    LabPage(),
-    ProfilePage(),
-  ];
+  String tr(String ar, String en) =>
+      widget.english ? en : ar;
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        body: SafeArea(
-          child: pages[selectedIndex],
-        ),
-        bottomNavigationBar: NavigationBar(
-          height: 70,
-          backgroundColor: const Color(0xFF0D130F),
-          indicatorColor: matrixGreen.withOpacity(0.14),
-          selectedIndex: selectedIndex,
-          onDestinationSelected: (index) {
-            setState(() {
-              selectedIndex = index;
-            });
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home_outlined),
-              selectedIcon: Icon(Icons.home, color: matrixGreen),
-              label: 'الرئيسية',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.menu_book_outlined),
-              selectedIcon: Icon(Icons.menu_book, color: matrixGreen),
-              label: 'الدورات',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.science_outlined),
-              selectedIcon: Icon(Icons.science, color: matrixGreen),
-              label: 'المختبر',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.person_outline),
-              selectedIcon: Icon(Icons.person, color: matrixGreen),
-              label: 'حسابي',
-            ),
-          ],
-        ),
+    final pages = [
+      homePage(),
+      coursesPage(),
+      quizPage(),
+      progressPage(),
+      settingsPage(),
+    ];
+
+    return Scaffold(
+      body: SafeArea(child: pages[page]),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: page,
+        onDestinationSelected: (i) => setState(() => page = i),
+        backgroundColor: const Color(0xFF101827),
+        indicatorColor: widget.accent.withOpacity(.2),
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(Icons.home),
+            label: tr('الرئيسية', 'Home'),
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.school),
+            label: tr('الدورات', 'Courses'),
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.quiz),
+            label: tr('اختبار', 'Quiz'),
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.insights),
+            label: tr('إنجازاتي', 'Progress'),
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.settings),
+            label: tr('الإعدادات', 'Settings'),
+          ),
+        ],
       ),
     );
   }
-}
 
-// ==================== HOME PAGE ====================
+  Widget homePage() {
+    final total = courses.fold<int>(
+      0,
+      (sum, course) => sum + course.lessons.length,
+    );
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 24),
+      padding: const EdgeInsets.all(18),
       children: [
         Row(
           children: [
-            Container(
-              height: 46,
-              width: 46,
-              decoration: BoxDecoration(
-                color: matrixGreen.withOpacity(0.12),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(
-                  color: matrixGreen.withOpacity(0.45),
-                ),
-              ),
-              child: const Icon(
-                Icons.security,
-                color: matrixGreen,
-                size: 27,
-              ),
-            ),
+            Icon(Icons.security, color: widget.accent, size: 38),
             const SizedBox(width: 12),
             const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '𝑬𝒅𝒎𝒂𝒏',
-                    style: TextStyle(
-                      color: matrixGreen,
-                      fontSize: 21,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  Text(
-                    'CYBER ACADEMY',
-                    style: TextStyle(
-                      color: muted,
-                      fontSize: 10,
-                      letterSpacing: 2.2,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                showAppMessage(context, 'الإشعارات قريباً');
-              },
-              icon: const Icon(
-                Icons.notifications_none,
-                color: muted,
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 24),
-
-        // Welcome Card
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            gradient: const LinearGradient(
-              colors: [
-                Color(0xFF12351F),
-                Color(0xFF0C1710),
-                Color(0xFF101813),
-              ],
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-            ),
-            border: Border.all(
-              color: matrixGreen.withOpacity(0.35),
-            ),
-          ),
-          child: Stack(
-            children: [
-              Positioned(
-                left: -8,
-                top: -8,
-                child: Icon(
-                  Icons.memory,
-                  size: 105,
-                  color: matrixGreen.withOpacity(0.08),
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'مستقبلك في الأمن يبدأ هنا',
-                    style: TextStyle(
-                      fontSize: 22,
-                      height: 1.5,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'تعلّم، تدرب، واحمِ العالم الرقمي بمسؤولية.',
-                    style: TextStyle(
-                      color: Color(0xFFC1D0C5),
-                      height: 1.6,
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  FilledButton.icon(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: matrixGreen,
-                      foregroundColor: Colors.black,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          // تم إصلاح خطأ const هنا
-                          builder: (_) => CourseDetailPage(
-                            course: courses.first,
-                          ),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.play_arrow),
-                    label: const Text(
-                      'ابدأ التعلم',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 22),
-
-        const SectionHeading(
-          title: 'ملخص تقدمك',
-          action: 'هذا الجهاز',
-        ),
-
-        const SizedBox(height: 12),
-
-        Row(
-          children: const [
-            Expanded(
-              child: StatCard(
-                icon: Icons.menu_book,
-                value: '6',
-                label: 'دورات',
-                color: matrixGreen,
-              ),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: StatCard(
-                icon: Icons.check_circle_outline,
-                value: '0',
-                label: 'دروس مكتملة',
-                color: neonGreen,
-              ),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: StatCard(
-                icon: Icons.local_fire_department,
-                value: '0',
-                label: 'أيام متتالية',
-                color: Color(0xFFFFB74D),
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 24),
-
-        const SectionHeading(
-          title: 'ابدأ من هنا',
-          action: 'عرض الكل',
-        ),
-
-        const SizedBox(height: 12),
-
-        CourseTile(course: courses[0]),
-        CourseTile(course: courses[1]),
-
-        const SizedBox(height: 12),
-
-        const SafetyNotice(),
-      ],
-    );
-  }
-}
-
-// ==================== COURSES PAGE ====================
-
-class CoursesPage extends StatelessWidget {
-  const CoursesPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(18),
-      children: [
-        const PageTitle(
-          title: 'المسارات التعليمية',
-          subtitle: 'اختر مسارك وتعلم خطوة بخطوة',
-        ),
-        const SizedBox(height: 18),
-        ...courses.map(
-          (course) => CourseTile(course: course),
-        ),
-        const SizedBox(height: 12),
-        const SafetyNotice(),
-      ],
-    );
-  }
-}
-
-// ==================== COURSE TILE ====================
-
-class CourseTile extends StatelessWidget {
-  final Course course;
-
-  const CourseTile({
-    super.key,
-    required this.course,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: panel,
-      elevation: 0,
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-        side: BorderSide(
-          color: Colors.white.withOpacity(0.07),
-        ),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => CourseDetailPage(
-                course: course,
-              ),
-            ),
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            children: [
-              Container(
-                height: 52,
-                width: 52,
-                decoration: BoxDecoration(
-                  color: matrixGreen.withOpacity(0.10),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Icon(
-                  course.icon,
-                  color: matrixGreen,
-                  size: 27,
-                ),
-              ),
-              const SizedBox(width: 13),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      course.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      course.subtitle,
-                      style: const TextStyle(
-                        color: muted,
-                        fontSize: 11,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 9),
-                    Row(
-                      children: [
-                        SmallTag(text: course.level),
-                        const SizedBox(width: 7),
-                        SmallTag(text: course.duration),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: LinearProgressIndicator(
-                        value: course.progress,
-                        minHeight: 5,
-                        backgroundColor: Colors.white.withOpacity(0.08),
-                        valueColor:
-                            const AlwaysStoppedAnimation<Color>(
-                          matrixGreen,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              const Icon(
-                Icons.chevron_left,
-                color: muted,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ==================== COURSE DETAILS ====================
-
-class CourseDetailPage extends StatelessWidget {
-  final Course course;
-
-  const CourseDetailPage({
-    super.key,
-    required this.course,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: background,
-          title: const Text('تفاصيل الدورة'),
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(18),
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: panel,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: matrixGreen.withOpacity(0.25),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    course.icon,
-                    color: matrixGreen,
-                    size: 38,
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    course.title,
-                    style: const TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    course.subtitle,
-                    style: const TextStyle(
-                      color: muted,
-                      height: 1.6,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  Row(
-                    children: [
-                      SmallTag(text: course.level),
-                      const SizedBox(width: 8),
-                      SmallTag(text: course.duration),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 22),
-
-            const SectionHeading(
-              title: 'محتويات الدورة',
-            ),
-
-            const SizedBox(height: 10),
-
-            ...List.generate(
-              course.lessons.length,
-              (index) {
-                return Card(
-                  color: panel,
-                  elevation: 0,
-                  margin: const EdgeInsets.only(bottom: 9),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: matrixGreen.withOpacity(0.12),
-                      child: Text(
-                        '${index + 1}',
-                        style: const TextStyle(
-                          color: matrixGreen,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    title: Text(
-                      course.lessons[index],
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                    trailing: const Icon(
-                      Icons.lock_outline,
-                      color: muted,
-                      size: 18,
-                    ),
-                    onTap: () {
-                      showAppMessage(
-                        context,
-                        'سيتم إضافة محتوى هذا الدرس في المرحلة القادمة',
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-
-            const SafetyNotice(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ==================== LAB PAGE ====================
-
-class LabPage extends StatelessWidget {
-  const LabPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(18),
-      children: [
-        const PageTitle(
-          title: 'المختبر التدريبي',
-          subtitle: 'تدريبات تعليمية آمنة داخل بيئة تجريبية',
-        ),
-
-        const SizedBox(height: 18),
-
-        Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            color: panel,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: matrixGreen.withOpacity(0.25),
-            ),
-          ),
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.science_outlined,
-                color: matrixGreen,
-                size: 34,
-              ),
-              SizedBox(height: 12),
-              Text(
-                'مساحة التدريب قيد التجهيز',
+              child: Text(
+                'EDMAN CYBER ACADEMY',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+            ),
+          ],
+        ),
+        const SizedBox(height: 25),
+        Container(
+          padding: const EdgeInsets.all(22),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            gradient: LinearGradient(
+              colors: [
+                widget.accent.withOpacity(.45),
+                const Color(0xFF111B2B),
+              ],
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Text(
-                'سنضيف تحديات لفهم الشبكات وتحليل سجلات تجريبية واكتشاف أخطاء تطبيقات تدريبية، دون استهداف أجهزة أو مواقع حقيقية.',
-                style: TextStyle(
-                  color: muted,
-                  height: 1.7,
+                tr(
+                  'مرحباً بك في عالم الأمن السيبراني',
+                  'Welcome to Cybersecurity',
                 ),
+                style: const TextStyle(
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                tr(
+                  'تعلم البرمجة والشبكات والحماية الرقمية من مكان واحد.',
+                  'Learn programming, networking and digital security.',
+                ),
+              ),
+              const SizedBox(height: 18),
+              FilledButton.icon(
+                onPressed: () => setState(() => page = 1),
+                icon: const Icon(Icons.play_arrow),
+                label: Text(tr('ابدأ التعلم', 'Start learning')),
               ),
             ],
           ),
         ),
-
-        const SizedBox(height: 16),
-
-        const LabChallenge(
-          title: 'تحدي أساسيات الشبكات',
-          description: 'تعرف على IP وDNS والمنافذ من خلال أسئلة تفاعلية.',
-          icon: Icons.router,
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            Expanded(
+              child: statCard(
+                '$total',
+                tr('درس', 'Lessons'),
+                Icons.menu_book,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: statCard(
+                '${doneLessons.length}',
+                tr('مكتمل', 'Completed'),
+                Icons.check_circle,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: statCard(
+                '${courses.length}',
+                tr('مسارات', 'Tracks'),
+                Icons.category,
+              ),
+            ),
+          ],
         ),
-
-        const LabChallenge(
-          title: 'حلّل سجل دخول تجريبي',
-          description: 'تعلم تمييز الأنشطة غير المعتادة في سجل افتراضي.',
-          icon: Icons.receipt_long,
+        const SizedBox(height: 22),
+        const Text(
+          'المسارات التعليمية',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-
-        const LabChallenge(
-          title: 'اكتشف خطأ في صفحة تدريبية',
-          description: 'تعرف على التحقق من المدخلات وطرق الحماية.',
-          icon: Icons.bug_report_outlined,
+        const SizedBox(height: 12),
+        ...courses.map(
+          (course) => courseCard(course),
         ),
       ],
     );
   }
-}
 
-// ==================== LAB CHALLENGE ====================
-
-class LabChallenge extends StatelessWidget {
-  final String title;
-  final String description;
-  final IconData icon;
-
-  const LabChallenge({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget statCard(String value, String label, IconData icon) {
     return Card(
-      color: panel,
-      elevation: 0,
-      margin: const EdgeInsets.only(bottom: 10),
-      child: ListTile(
-        leading: Icon(
-          icon,
-          color: matrixGreen,
-          size: 27,
+      child: Padding(
+        padding: const EdgeInsets.all(13),
+        child: Column(
+          children: [
+            Icon(icon, color: widget.accent),
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(label, style: const TextStyle(fontSize: 11)),
+          ],
         ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(
-          description,
-          style: const TextStyle(
-            color: muted,
-            fontSize: 12,
-            height: 1.5,
-          ),
-        ),
-        trailing: const Icon(
-          Icons.chevron_left,
-          color: muted,
-        ),
-        onTap: () {
-          showAppMessage(context, 'التحدي سيُتاح قريباً');
-        },
       ),
     );
   }
-}
 
-// ==================== PROFILE PAGE ====================
+  Widget courseCard(Course course) {
+    final count = course.lessons
+        .where((l) => doneLessons.contains(l.title))
+        .length;
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: ExpansionTile(
+        leading: CircleAvatar(
+          backgroundColor: widget.accent.withOpacity(.15),
+          child: Icon(course.icon, color: widget.accent),
+        ),
+        title: Text(
+          course.title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(
+          '$count / ${course.lessons.length} دروس مكتملة',
+        ),
+        children: course.lessons.map((lesson) {
+          return ListTile(
+            leading: Icon(
+              doneLessons.contains(lesson.title)
+                  ? Icons.check_circle
+                  : lesson.icon,
+              color: widget.accent,
+            ),
+            title: Text(lesson.title),
+            subtitle: Text(lesson.description),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 15),
+            onTap: () => openLesson(lesson),
+          );
+        }).toList(),
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  void openLesson(Lesson lesson) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => LessonScreen(
+          lesson: lesson,
+          accent: widget.accent,
+          isDone: doneLessons.contains(lesson.title),
+          isFavorite: favorites.contains(lesson.title),
+          onDone: () {
+            setState(() => doneLessons.add(lesson.title));
+          },
+          onFavorite: () {
+            setState(() {
+              if (!favorites.add(lesson.title)) {
+                favorites.remove(lesson.title);
+              }
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget coursesPage() {
     return ListView(
       padding: const EdgeInsets.all(18),
       children: [
-        const PageTitle(
-          title: 'حسابي',
-          subtitle: 'تابع تقدمك وإعدادات تجربتك التعليمية',
+        const Text(
+          'الأكاديمية التعليمية',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
+        const SizedBox(height: 15),
+        ...courses.map((course) => courseCard(course)),
+      ],
+    );
+  }
 
-        const SizedBox(height: 22),
+  Widget quizPage() {
+    return QuizScreen(accent: widget.accent);
+  }
 
-        Center(
-          child: Container(
-            height: 92,
-            width: 92,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: matrixGreen.withOpacity(0.12),
-              border: Border.all(
-                color: matrixGreen.withOpacity(0.6),
-                width: 2,
-              ),
-            ),
-            child: const Icon(
-              Icons.person,
-              color: matrixGreen,
-              size: 48,
+  Widget progressPage() {
+    final total = courses.fold<int>(
+      0,
+      (sum, course) => sum + course.lessons.length,
+    );
+
+    final percent = total == 0
+        ? 0
+        : (doneLessons.length / total * 100).round();
+
+    return ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        const Text(
+          'إنجازاتي',
+          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 25),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(25),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      CircularProgressIndicator(
+                        value: total == 0 ? 0 : doneLessons.length / total,
+                        strokeWidth: 12,
+                        color: widget.accent,
+                        backgroundColor: Colors.white12,
+                      ),
+                      Center(
+                        child: Text(
+                          '$percent%',
+                          style: const TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 15),
+                const Text('نسبة إكمال الدروس'),
+              ],
             ),
           ),
         ),
+        Card(
+          child: ListTile(
+            leading: Icon(Icons.check_circle, color: widget.accent),
+            title: const Text('الدروس المكتملة'),
+            trailing: Text('${doneLessons.length}'),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            leading: Icon(Icons.bookmark, color: widget.accent),
+            title: const Text('الدروس المفضلة'),
+            trailing: Text('${favorites.length}'),
+          ),
+        ),
+      ],
+    );
+  }
 
+  Widget settingsPage() {
+    final colors = [
+      const Color(0xFF8B5CF6),
+      const Color(0xFFE0AE35),
+      const Color(0xFFEF4444),
+      const Color(0xFF168BFF),
+      const Color(0xFF00D084),
+    ];
+
+    final names = [
+      'بنفسجي',
+      'ذهبي',
+      'أحمر',
+      'أزرق',
+      'أخضر Matrix',
+    ];
+
+    return ListView(
+      padding: const EdgeInsets.all(18),
+      children: [
+        const Text(
+          'الإعدادات',
+          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 20),
+        Card(
+          child: SwitchListTile(
+            title: const Text('English language'),
+            subtitle: const Text('التبديل بين العربية والإنجليزية'),
+            value: widget.english,
+            onChanged: widget.onLanguage,
+          ),
+        ),
+        const SizedBox(height: 20),
+        const Text(
+          'ألوان التطبيق',
+          style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 12),
-
-        const Center(
-          child: Text(
-            'متعلم جديد',
-            style: TextStyle(
-              fontSize: 19,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-
-        const Center(
-          child: Text(
-            'رحلتك في الأمن السيبراني تبدأ اليوم',
-            style: TextStyle(
-              color: muted,
-              fontSize: 12,
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 24),
-
-        const ProfileOption(
-          icon: Icons.emoji_events_outlined,
-          title: 'إنجازاتي',
-        ),
-
-        const ProfileOption(
-          icon: Icons.bookmark_border,
-          title: 'الدروس المحفوظة',
-        ),
-
-        const ProfileOption(
-          icon: Icons.settings_outlined,
-          title: 'الإعدادات',
-        ),
-
-        const ProfileOption(
-          icon: Icons.info_outline,
-          title: 'عن Edman Cyber Academy',
-        ),
-
-        const SizedBox(height: 16),
-
-        const SafetyNotice(),
-      ],
-    );
-  }
-}
-
-// ==================== PROFILE OPTION ====================
-
-class ProfileOption extends StatelessWidget {
-  final IconData icon;
-  final String title;
-
-  const ProfileOption({
-    super.key,
-    required this.icon,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: panel,
-      elevation: 0,
-      margin: const EdgeInsets.only(bottom: 9),
-      child: ListTile(
-        leading: Icon(
-          icon,
-          color: matrixGreen,
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(fontSize: 14),
-        ),
-        trailing: const Icon(
-          Icons.chevron_left,
-          color: muted,
-        ),
-        onTap: () {
-          showAppMessage(context, 'سيتم تفعيل هذا القسم لاحقاً');
-        },
-      ),
-    );
-  }
-}
-
-// ==================== PAGE TITLE ====================
-
-class PageTitle extends StatelessWidget {
-  final String title;
-  final String subtitle;
-
-  const PageTitle({
-    super.key,
-    required this.title,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          subtitle,
-          style: const TextStyle(
-            color: muted,
-            fontSize: 13,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// ==================== SECTION HEADING ====================
-
-class SectionHeading extends StatelessWidget {
-  final String title;
-  final String? action;
-
-  const SectionHeading({
-    super.key,
-    required this.title,
-    this.action,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          height: 20,
-          width: 4,
-          decoration: BoxDecoration(
-            color: matrixGreen,
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ),
-        const SizedBox(width: 9),
-        Expanded(
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        if (action != null)
-          Text(
-            action!,
-            style: const TextStyle(
-              color: muted,
-              fontSize: 11,
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-// ==================== STAT CARD ====================
-
-class StatCard extends StatelessWidget {
-  final IconData icon;
-  final String value;
-  final String label;
-  final Color color;
-
-  const StatCard({
-    super.key,
-    required this.icon,
-    required this.value,
-    required this.label,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        vertical: 14,
-        horizontal: 7,
-      ),
-      decoration: BoxDecoration(
-        color: panel,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.06),
-        ),
-      ),
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            color: color,
-            size: 21,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: muted,
-              fontSize: 10,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ==================== SMALL TAG ====================
-
-class SmallTag extends StatelessWidget {
-  final String text;
-
-  const SmallTag({
-    super.key,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 9,
-        vertical: 4,
-      ),
-      decoration: BoxDecoration(
-        color: matrixGreen.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: matrixGreen.withOpacity(0.22),
-        ),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: matrixGreen,
-          fontSize: 10,
-        ),
-      ),
-    );
-  }
-}
-
-// ==================== SAFETY NOTICE ====================
-
-class SafetyNotice extends StatelessWidget {
-  const SafetyNotice({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: const Color(0xFF172016),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(
-          color: const Color(0xFF547A43).withOpacity(0.45),
-        ),
-      ),
-      child: const Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            Icons.verified_user_outlined,
-            color: matrixGreen,
-            size: 21,
-          ),
-          SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              'تنبيه أخلاقي: جميع التدريبات مخصصة للتعلم داخل مختبرات تملكها أو لديك تصريح واضح لاختبارها. لا تختبر أنظمة الآخرين دون إذن.',
-              style: TextStyle(
-                color: Color(0xFFC4D0C5),
-                fontSize: 11,
-                height: 1.6,
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children: List.generate(
+            colors.length,
+            (i) => InkWell(
+              onTap: () => widget.onTheme(colors[i]),
+              child: Container(
+                width: 100,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: colors[i].withOpacity(.15),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: colors[i]),
+                ),
+                child: Column(
+                  children: [
+                    CircleAvatar(backgroundColor: colors[i]),
+                    const SizedBox(height: 8),
+                    Text(names[i]),
+                  ],
+                ),
               ),
             ),
           ),
+        ),
+        const SizedBox(height: 25),
+        const Text(
+          'تواصل معنا',
+          style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        const ListTile(
+          leading: Icon(Icons.telegram, color: Colors.lightBlue),
+          title: Text('Telegram'),
+          subtitle: Text('@youssef7_HAKER'),
+        ),
+        const ListTile(
+          leading: Icon(Icons.play_circle_fill, color: Colors.red),
+          title: Text('YouTube'),
+          subtitle: Text('@Edman_haking-i4f'),
+        ),
+        const ListTile(
+          leading: Icon(Icons.chat, color: Colors.green),
+          title: Text('WhatsApp'),
+          subtitle: Text('+201147144716'),
+        ),
+        const SizedBox(height: 20),
+        const Card(
+          child: ListTile(
+            leading: Icon(Icons.star, color: Colors.amber),
+            title: Text('قيّم التطبيق'),
+            subtitle: Text('شكراً لدعمك وتقييمك لـ Edman.'),
+          ),
+        ),
+        const SizedBox(height: 20),
+        const Center(
+          child: Text(
+            'EDMAN CYBER ACADEMY • VERSION 1.0',
+            style: TextStyle(color: Colors.white38, fontSize: 11),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class LessonScreen extends StatefulWidget {
+  final Lesson lesson;
+  final Color accent;
+  final bool isDone;
+  final bool isFavorite;
+  final VoidCallback onDone;
+  final VoidCallback onFavorite;
+
+  const LessonScreen({
+    super.key,
+    required this.lesson,
+    required this.accent,
+    required this.isDone,
+    required this.isFavorite,
+    required this.onDone,
+    required this.onFavorite,
+  });
+
+  @override
+  State<LessonScreen> createState() => _LessonScreenState();
+}
+
+class _LessonScreenState extends State<LessonScreen> {
+  late bool done;
+  late bool favorite;
+
+  @override
+  void initState() {
+    super.initState();
+    done = widget.isDone;
+    favorite = widget.isFavorite;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('EDMAN LESSON'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              widget.onFavorite();
+              setState(() => favorite = !favorite);
+            },
+            icon: Icon(
+              favorite ? Icons.bookmark : Icons.bookmark_border,
+              color: widget.accent,
+            ),
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          Icon(widget.lesson.icon, size: 55, color: widget.accent),
+          const SizedBox(height: 20),
+          Text(
+            widget.lesson.title,
+            style: const TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            widget.lesson.description,
+            style: const TextStyle(color: Colors.white60),
+          ),
+          const SizedBox(height: 20),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                widget.lesson.content,
+                style: const TextStyle(fontSize: 17, height: 1.9),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: done
+                  ? null
+                  : () {
+                      widget.onDone();
+                      setState(() => done = true);
+                    },
+              icon: const Icon(Icons.check_circle),
+              label: Text(
+                done ? 'تم إكمال الدرس' : 'تحديد الدرس كمكتمل',
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          const Text(
+            'تذكر: استخدم المعرفة لأغراض التعلم والحماية، واختبر فقط الأنظمة التي تملكها أو لديك تصريح واضح لاختبارها.',
+            style: TextStyle(color: Colors.white54, height: 1.6),
+          ),
         ],
       ),
     );
   }
 }
 
-// ==================== APP MESSAGE ====================
+class QuizScreen extends StatefulWidget {
+  final Color accent;
 
-void showAppMessage(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(
-        message,
-        textDirection: TextDirection.rtl,
-      ),
-      backgroundColor: const Color(0xFF1D3022),
-      behavior: SnackBarBehavior.floating,
-    ),
-  );
+  const QuizScreen({super.key, required this.accent});
+
+  @override
+  State<QuizScreen> createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen> {
+  int index = 0;
+  int score = 0;
+  int? selected;
+  bool finished = false;
+
+  final questions = [
+    {
+      'q': 'ما الهدف الأساسي من الأمن السيبراني؟',
+      'a': [
+        'حماية الأنظمة والبيانات',
+        'زيادة سرعة الإنترنت',
+        'تصميم الصور',
+        'إلغاء كلمات المرور',
+      ],
+      'c': 0,
+    },
+    {
+      'q': 'ما أفضل طريقة لزيادة حماية الحساب؟',
+      'a': [
+        'مشاركة كلمة المرور',
+        'استخدام المصادقة متعددة العوامل',
+        'استخدام كلمة مرور واحدة لكل الحسابات',
+        'تعطيل التحديثات',
+      ],
+      'c': 1,
+    },
+    {
+      'q': 'ما وظيفة DNS؟',
+      'a': [
+        'تغيير ألوان الشاشة',
+        'تحويل أسماء المواقع إلى عناوين IP',
+        'حذف الملفات',
+        'زيادة مساحة الهاتف',
+      ],
+      'c': 1,
+    },
+    {
+      'q': 'هل المنفذ المفتوح يعني اختراقاً مؤكداً؟',
+      'a': [
+        'نعم دائماً',
+        'لا، يجب فهم الخدمة والسياق',
+        'يعني أن الجهاز مغلق',
+        'يعني عدم وجود شبكة',
+      ],
+      'c': 1,
+    },
+    {
+      'q': 'أين يجب أن تتدرب على اختبار الأمان؟',
+      'a': [
+        'أي موقع عشوائي',
+        'جهازك أو مختبر مصرح به',
+        'شبكة الجيران',
+        'حسابات الآخرين',
+      ],
+      'c': 1,
+    },
+  ];
+
+  void answer(int choice) {
+    if (selected != null) return;
+
+    setState(() {
+      selected = choice;
+      if (choice == questions[index]['c']) {
+        score++;
+      }
+    });
+  }
+
+  void next() {
+    if (index == questions.length - 1) {
+      setState(() => finished = true);
+    } else {
+      setState(() {
+        index++;
+        selected = null;
+      });
+    }
+  }
+
+  void restart() {
+    setState(() {
+      index = 0;
+      score = 0;
+      selected = null;
+      finished = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (finished) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.emoji_events, size: 75, color: widget.accent),
+            const SizedBox(height: 20),
+            const Text(
+              'انتهى الاختبار!',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'نتيجتك: $score من ${questions.length}',
+              style: const TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 20),
+            FilledButton(
+              onPressed: restart,
+              child: const Text('إعادة الاختبار'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final question = questions[index];
+    final answers = question['a'] as List<String>;
+    final correct = question['c'] as int;
+
+    return ListView(
+      padding: const EdgeInsets.all(18),
+      children: [
+        const Text(
+          'اختبر معلوماتك',
+          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        Text('السؤال ${index + 1} من ${questions.length}'),
+        const SizedBox(height: 15),
+        LinearProgressIndicator(
+          value: (index + 1) / questions.length,
+          color: widget.accent,
+        ),
+        const SizedBox(height: 25),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              question['q'] as String,
+              style: const TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 15),
+        ...List.generate(answers.length, (i) {
+          Color? color;
+
+          if (selected != null && i == correct) {
+            color = Colors.green.withOpacity(.25);
+          } else if (selected == i) {
+            color = Colors.red.withOpacity(.25);
+          }
+
+          return Card(
+            color: color,
+            child: ListTile(
+              title: Text(answers[i]),
+              onTap: () => answer(i),
+            ),
+          );
+        }),
+        const SizedBox(height: 20),
+        if (selected != null)
+          FilledButton(
+            onPressed: next,
+            child: Text(
+              index == questions.length - 1
+                  ? 'عرض النتيجة'
+                  : 'السؤال التالي',
+            ),
+          ),
+      ],
+    );
+  }
 }
